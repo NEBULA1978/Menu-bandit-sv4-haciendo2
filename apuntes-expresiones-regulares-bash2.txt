@@ -1,0 +1,129 @@
+Ramonet Pascualet
+hazme ejemplo para filtar un csv con expresiones regulares
+
+¡Por supuesto! Para filtrar un archivo CSV con expresiones regulares, puedes utilizar el comando grep. Supongamos que tienes un archivo llamado datos.csv con el siguiente contenido:
+
+Nombre,Edad,Ciudad
+Juan,30,Barcelona
+Ana,25,Madrid
+Pedro,40,Barcelona
+Luisa,22,Sevilla
+
+Para filtrar este archivo por una expresión regular, por ejemplo, para encontrar todas las líneas que contienen "Barcelona", puedes utilizar el siguiente comando:
+
+perl
+
+grep "Barcelona" datos.csv
+
+El resultado de este comando sería:
+
+Juan,30,Barcelona
+Pedro,40,Barcelona
+
+Puedes usar expresiones regulares más complejas para filtrar el archivo. Por ejemplo, para encontrar todas las líneas que contienen nombres que empiezan por "J" o "A" y tienen una edad menor de 30 años, puedes utilizar la siguiente expresión regular:
+
+css
+
+^(J|A).*\b([1-2]?[0-9])\b
+
+Esta expresión regular encuentra todas las líneas que empiezan con "J" o "A", seguido de cualquier carácter (.*), seguido de una edad entre 0 y 29 años (expresado como \b([1-2]?[0-9])\b).
+
+Para utilizar esta expresión regular con grep, puedes utilizar el siguiente comando:
+
+css
+
+grep -E "^(J|A).*\b([1-2]?[0-9])\b" datos.csv
+
+El resultado de este comando sería:
+
+Juan,30,Barcelona
+Ana,25,Madrid
+
+De esta forma, puedes filtrar un archivo CSV con expresiones regulares utilizando el comando grep.
+Ramonet Pascualet
+#!/bin/bash
+
+# Definimos un array con las opciones del menú. Cada opción es una cadena con dos partes separadas por el carácter '|': el nombre de la opción y el comando correspondiente.
+opciones=(
+    "Mostrar directorio:|ls"
+
+    "Salir:|exit 0"
+)
+while true; do
+    clear
+    echo "Ingrese el número de la opción deseada:"
+    for i in "${!opciones[@]}"; do
+        echo "$i. ${opciones[$i]%%|*}" # Imprimimos el índice de la opción y su nombre (sin el comando correspondiente).
+    done
+    read opcion
+
+    case "$opcion" in
+        [0-9])
+            if [ "$opcion" -ge 0 ] && [ "$opcion" -lt "${#opciones[@]}" ]; then
+                clear
+                comando="${opciones[$opcion]#*|}" # Obtenemos el comando correspondiente a la opción seleccionada.
+                eval "$comando"                   # Ejecutamos el comando.
+                echo ""
+                echo "Presione Enter para continuar..."
+                read
+            else
+                echo "Opción inválida. Presione Enter para continuar..."
+                read
+            fi
+            ;;
+        *)
+            echo "Opción inválida. Presione Enter para continuar..."
+            read
+            ;;
+    esac
+
+done ,,añademe las ultimas opciones a este menu
+
+¡Por supuesto! Puedes añadir las últimas opciones al menú de la siguiente manera:
+
+swift
+
+opciones=(
+    "Mostrar directorio:|ls"
+
+    "Filtrar archivo CSV:|grep -E '^(J|A).*\\b([1-2]?[0-9])\\b' datos.csv"
+
+    "Buscar archivos grandes:|find /directorio -type f -size +100M"
+
+    "Mostrar espacio en disco:|df -h"
+
+    "Salir:|exit 0"
+)
+
+En la opción "Filtrar archivo CSV", se filtran las líneas del archivo datos.csv que cumplen con una expresión regular que busca nombres que empiezan por "J" o "A" y tienen una edad menor de 30 años.
+
+En la opción "Buscar archivos grandes", se buscan archivos en el directorio /directorio que tengan un tamaño mayor a 100MB.
+
+En la opción "Mostrar espacio en disco", se muestra la información del espacio en disco disponible en el sistema.
+
+Recuerda que puedes personalizar los comandos y opciones de acuerdo a tus necesidades.
+Ramonet Pascualet
+con awk
+
+¡Por supuesto! Puedes añadir una opción al menú para utilizar awk de la siguiente manera:
+
+css
+
+opciones=(
+    "Mostrar directorio:|ls"
+
+    "Filtrar archivo CSV con awk:|awk -F ',' '\$2 < 30 {print}' datos.csv"
+
+    "Buscar archivos grandes:|find /directorio -type f -size +100M"
+
+    "Mostrar espacio en disco:|df -h"
+
+    "Salir:|exit 0"
+)
+
+En la opción "Filtrar archivo CSV con awk", se utiliza awk para filtrar las líneas del archivo datos.csv donde el segundo campo (la edad) sea menor de 30.
+
+La opción -F ',' indica que se utiliza la coma como separador de campos en el archivo CSV y \$2 < 30 {print} es la expresión de filtrado. La expresión {print} indica que se imprimirán las líneas que cumplan la condición especificada (\$2 < 30, es decir, la edad es menor a 30).
+
+Recuerda que puedes personalizar el comando awk para que se ajuste a tus necesidades y que puedes utilizar otras opciones y expresiones para filtrar y procesar archivos CSV con awk.
+

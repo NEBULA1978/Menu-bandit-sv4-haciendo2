@@ -1,0 +1,175 @@
+#!/bin/bash
+
+# Definimos un array con las opciones del menú. Cada opción es una cadena con dos partes separadas por el carácter '|': el nombre de la opción y el comando correspondiente.
+opciones=(
+    "Mostrar directorio:|ls"
+
+    "Salir:|exit 0"
+)
+while true; do
+    clear
+    echo "Ingrese el número de la opción deseada:"
+    for i in "${!opciones[@]}"; do
+        echo "$i. ${opciones[$i]%%|*}" # Imprimimos el índice de la opción y su nombre (sin el comando correspondiente).
+    done
+    read opcion
+
+    case "$opcion" in
+        [0-9])
+            if [ "$opcion" -ge 0 ] && [ "$opcion" -lt "${#opciones[@]}" ]; then
+                clear
+                comando="${opciones[$opcion]#*|}" # Obtenemos el comando correspondiente a la opción seleccionada.
+                eval "$comando"                   # Ejecutamos el comando.
+                echo ""
+                echo "Presione Enter para continuar..."
+                read
+            else
+                echo "Opción inválida. Presione Enter para continuar..."
+                read
+            fi
+            ;;
+        *)
+            echo "Opción inválida. Presione Enter para continuar..."
+            read
+            ;;
+    esac
+
+done
+tengo este menu ,puedes añadirme opciones de awk,sed,cut,tr,find
+
+¡Por supuesto! Puedes añadir opciones de awk, sed, cut, tr, find de la siguiente manera:
+
+css
+
+opciones=(
+    "Mostrar directorio:|ls"
+    
+    "Mostrar contenido de archivo:|cat archivo.txt"
+    
+    "Filtrar archivo con awk:|awk '/patron/ {print}' archivo.txt"
+    
+    "Eliminar líneas con sed:|sed '/patron/d' archivo.txt"
+    
+    "Cortar campos con cut:|cut -d ',' -f 1 archivo.csv"
+    
+    "Reemplazar caracteres con tr:|tr 'a' 'b' < archivo.txt"
+    
+    "Buscar archivos:|find /directorio -name '*.txt'"
+    
+    "Salir:|exit 0"
+)
+
+En la opción "Filtrar archivo con awk", patron debe ser reemplazado con la expresión regular que se desea buscar en el archivo.
+
+En la opción "Eliminar líneas con sed", patron debe ser reemplazado con la expresión regular que se desea eliminar del archivo.
+
+En la opción "Cortar campos con cut", archivo.csv debe ser reemplazado con el nombre del archivo que se desea cortar y -d ',' indica que se utiliza la coma como delimitador de campos y -f 1 indica que se cortará el primer campo.
+
+En la opción "Reemplazar caracteres con tr", archivo.txt debe ser reemplazado con el nombre del archivo que se desea modificar y 'a' y 'b' deben ser reemplazados con los caracteres que se desean reemplazar y el carácter de reemplazo, respectivamente.
+
+En la opción "Buscar archivos", /directorio debe ser reemplazado con la ruta del directorio donde se desea buscar y *.txt indica que se buscarán archivos con extensión .txt.
+Ramonet Pascualet
+añademe mas opciones con mas nivel
+
+¡Claro! Aquí te presento algunas opciones adicionales con mayor nivel de complejidad:
+
+css
+
+opciones=(
+    "Mostrar directorio:|ls"
+    
+    "Mostrar contenido de archivo:|cat archivo.txt"
+    
+    "Filtrar archivo con awk:|awk '/patron/ {print}' archivo.txt"
+    
+    "Eliminar líneas con sed:|sed '/patron/d' archivo.txt"
+    
+    "Cortar campos con cut:|cut -d ',' -f 1 archivo.csv"
+    
+    "Reemplazar caracteres con tr:|tr 'a' 'b' < archivo.txt"
+    
+    "Buscar archivos:|find /directorio -name '*.txt'"
+    
+    "Contar palabras en archivo:|wc -w archivo.txt"
+    
+    "Encontrar archivo más reciente:|ls -t | head -n 1"
+    
+    "Listar procesos con ps:|ps aux"
+    
+    "Ordenar archivo por columna con sort:|sort -k 2,2 archivo.txt"
+    
+    "Encontrar archivos grandes:|find /directorio -type f -size +100M"
+    
+    "Salir:|exit 0"
+)
+
+En la opción "Contar palabras en archivo", archivo.txt debe ser reemplazado con el nombre del archivo del que se desean contar las palabras.
+
+En la opción "Encontrar archivo más reciente", se listan los archivos del directorio actual por fecha de modificación y se muestra el más reciente.
+
+En la opción "Listar procesos con ps", se muestra información detallada de los procesos en ejecución en el sistema.
+
+En la opción "Ordenar archivo por columna con sort", se ordena el archivo archivo.txt por la segunda columna.
+
+En la opción "Encontrar archivos grandes", se buscan archivos en el directorio /directorio que tengan un tamaño mayor a 100MB.
+Ramonet Pascualet
+para filtar un css por nombres asignaturas mas puntuaciones en asignaturas
+
+Para filtrar un archivo CSS por nombres de asignaturas y puntuaciones en esas asignaturas, podrías usar el comando grep y awk. Supongamos que tienes un archivo llamado notas.css con el siguiente contenido:
+
+css
+
+.algebra {
+    font-weight: bold;
+    font-size: 18px;
+    color: blue;
+}
+.algebra-nota {
+    font-weight: normal;
+    font-size: 14px;
+    color: black;
+    content: "8.5";
+}
+.geometria {
+    font-weight: bold;
+    font-size: 18px;
+    color: green;
+}
+.geometria-nota {
+    font-weight: normal;
+    font-size: 14px;
+    color: black;
+    content: "9.0";
+}
+.calculo {
+    font-weight: bold;
+    font-size: 18px;
+    color: red;
+}
+.calculo-nota {
+    font-weight: normal;
+    font-size: 14px;
+    color: black;
+    content: "7.5";
+}
+
+Para filtrar por nombres de asignaturas y puntuaciones en esas asignaturas, podrías utilizar el siguiente comando:
+
+perl
+
+grep -E '\.(algebra|geometria|calculo)(-nota)?\s*\{' notas.css | awk -F '[{-]' '{print $2,$4}' | sed 's/[;}"]//g'
+
+Explicación del comando:
+
+    grep -E '\.(algebra|geometria|calculo)(-nota)?\s*\{' notas.css: busca todas las líneas que contengan los nombres de las asignaturas (algebra, geometria y calculo) y el patrón "-nota" si es que existiera, seguido de un bloque de llaves.
+    awk -F '[{-]' '{print $2,$4}': utiliza awk para imprimir el segundo y cuarto campo de cada línea que coincida con el patrón. Los campos se dividen en base a los caracteres "{" y "}", que se especifican con el parámetro -F.
+    sed 's/[;}"]//g': elimina los caracteres ";", "}" y las comillas dobles de la salida de awk.
+
+El resultado de este comando sería el siguiente:
+
+algebra 8.5
+geometria 9.0
+calculo 7.5
+
+De esta forma, puedes filtrar un archivo CSS por nombres de asignaturas y puntuaciones en esas asignaturas.
+
